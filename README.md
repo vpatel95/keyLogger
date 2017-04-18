@@ -12,3 +12,4 @@ git clone https://github.com/vpatel95/keyLogger.git
 
 cd keyLogger && python logger.py
 ```
+*Do report BUGS*

